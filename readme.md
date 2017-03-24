@@ -41,7 +41,7 @@ page's response.
 
 The referred service accesses this functionality be setting the **plugin** key to *web_search_service*. This web search instance can then be configured for the particular web site that is being wrapped.
  
- For example, a Grassroots server can access the search engine at [Agris](http://agris.fao.org/agris-search/index.do) and it uses the configuration file shown below:
+ For example, a Grassroots server can access the search engine at [Agris](http://agris.fao.org/agris-search/index.do). It has an html search form which submits queries to *http://agris.fao.org/agris-search/index.do?query=value* and the results are displayed with entry appearing in a *div.result-item h3 a* css selector. The configuration file shown below wraps this up into being searchable from Grasssroots using the *web search service*.
   
 ~~~{.json}
 {
