@@ -124,7 +124,7 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 						CloseWebSearchService,
 						NULL,
 						false,
-						true,
+						SY_SYNCHRONOUS,
 						data_p);
 
 					return web_service_p;
