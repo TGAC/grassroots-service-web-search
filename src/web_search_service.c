@@ -245,7 +245,7 @@ static ServiceJobSet *RunWebSearchService (Service *service_p, ParameterSet *par
 		{
 			ServiceJob *job_p = GetServiceJobFromServiceJobSet (service_p -> se_jobs_p, 0);
 
-			job_p -> sj_status = OS_FAILED_TO_START;
+			SetServiceJobStatus (job_p, OS_FAILED_TO_START);
 
 			if (param_set_p)
 				{
@@ -281,7 +281,7 @@ static ServiceJobSet *RunWebSearchService (Service *service_p, ParameterSet *par
 										{
 											if (ReplaceServiceJobResults (job_p, results_p))
 												{
-													job_p -> sj_status = OS_SUCCEEDED;
+													SetServiceJobStatus (job_p, OS_SUCCEEDED);
 												}
 											else
 												{
