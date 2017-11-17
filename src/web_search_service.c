@@ -77,6 +77,8 @@ static bool CloseWebSearchService (Service *service_p);
 
 static json_t *CreateWebSearchServiceResults (WebSearchServiceData *data_p);
 
+static ServiceMetadata *GetWebSearchServiceMetadata (Service *service_p);
+
 /*
  * API FUNCTIONS
  */
@@ -113,7 +115,7 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 			
 			if (data_p)
 				{
-					InitialiseService (web_service_p,
+					if (InitialiseService (web_service_p,
 						GetWebSearchServiceName,
 						GetWebSearchServiceDesciption,
 						GetWebSearchServiceInformationUri,
@@ -125,9 +127,12 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 						NULL,
 						false,
 						SY_SYNCHRONOUS,
-						data_p);
+						data_p,
+						GetWebSearchServiceMetadata))
+						{
 
-					return web_service_p;
+							return web_service_p;
+						}
 				}
 			
 			FreeMemory (web_service_p);
@@ -321,5 +326,82 @@ static  ParameterSet *IsResourceForWebSearchService (Service * UNUSED_PARAM (ser
 {
 	return NULL;
 }
+
+
+
+static ServiceMetadata *GetWebSearchServiceMetadata (Service *service_p)
+{
+	const char *term_url_s = CONTEXT_PREFIX_EDAM_ONTOLOGY_S "SWO_0000139";
+	SchemaTerm *category_p = AllocateSchemaTerm (term_url_s, "web content search", "Web content search is the searching for information on the World Wide Web.");
+
+	if (category_p)
+		{
+			ServiceMetadata *metadata_p = AllocateServiceMetadata (category_p, NULL);
+
+			if (metadata_p)
+				{
+					SchemaTerm *input_p;
+
+					/* Gene ID */
+					term_url_s = CONTEXT_PREFIX_EDAM_ONTOLOGY_S "data_0968";
+					input_p = AllocateSchemaTerm (term_url_s, "Keyword", "Keyword(s) or phrase(s) used (typically) for text-searching purposes. "
+						"Boolean operators (AND, OR and NOT) and wildcard characters may be allowed.");
+
+					if (input_p)
+						{
+							if (AddSchemaTermToServiceMetadataInput (metadata_p, input_p))
+								{
+									SchemaTerm *output_p;
+
+									term_url_s = CONTEXT_PREFIX_SCHEMA_ORG_S "MediaObject";
+									output_p = AllocateSchemaTerm (term_url_s, "Media Object", "A media object, such as an image, video, or audio object embedded in a web page or a downloadable datase");
+
+									if (output_p)
+										{
+											if (AddSchemaTermToServiceMetadataOutput (metadata_p, output_p))
+												{
+													return metadata_p;
+												}		/* if (AddSchemaTermToServiceMetadataOutput (metadata_p, output_p)) */
+											else
+												{
+													PrintErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, "Failed to add output term %s to service metadata", term_url_s);
+													FreeSchemaTerm (output_p);
+												}
+
+										}		/* if (output_p) */
+									else
+										{
+											PrintErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, "Failed to allocate output term %s for service metadata", term_url_s);
+										}
+
+								}		/* if (AddSchemaTermToServiceMetadataInput (metadata_p, input_p)) */
+							else
+								{
+									PrintErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, "Failed to add input term %s to service metadata", term_url_s);
+									FreeSchemaTerm (input_p);
+								}
+
+						}		/* if (input_p) */
+					else
+						{
+							PrintErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, "Failed to allocate input term %s for service metadata", term_url_s);
+						}
+
+				}		/* if (metadata_p) */
+			else
+				{
+					PrintErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, "Failed to allocate service metadata");
+				}
+
+
+		}		/* if (category_p) */
+	else
+		{
+			PrintErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, "Failed to allocate category term %s for service metadata", term_url_s);
+		}
+
+	return NULL;
+}
+
 
 
