@@ -85,7 +85,7 @@ static ServiceMetadata *GetWebSearchServiceMetadata (Service *service_p);
  
 
  
-ServicesArray *GetServices (json_t *config_p)
+ServicesArray *GetReferenceServices (UserDetails *user_p, json_t *config_p)
 {
 	return GetReferenceServicesFromJSON (config_p, "web_search_service", GetWebSearchService);
 }

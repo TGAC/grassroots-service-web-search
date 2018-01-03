@@ -35,12 +35,13 @@ extern "C"
 /**
  * Get the ServicesArray containing the Web search Services.
  *
+ * @param user_p The details for the user accessing the Web search Services.
  * @param config_p The service configuration data.
  * @return The ServicesArray containing all of the Web search Services or
  * <code>NULL</code> upon error.
  * @ingroup web_search_service
  */
-WEB_SEARCH_SERVICE_API ServicesArray *GetServices (json_t *config_p);
+WEB_SEARCH_SERVICE_API ServicesArray *GetReferenceServices (UserDetails *user_p, json_t *config_p);
 
 
 /**
