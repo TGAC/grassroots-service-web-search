@@ -68,7 +68,7 @@ static ServiceJobSet *RunWebSearchService (Service *service_p, ParameterSet *par
 static  ParameterSet *IsResourceForWebSearchService (Service *service_p, Resource *resource_p, Handler *handler_p);
 
 
-static WebSearchServiceData *AllocateWebSearchServiceData (json_t *config_p);
+static WebSearchServiceData *AllocateWebSearchServiceData (json_t *service_config_p);
 
 
 static void FreeWebSearchServiceData (WebSearchServiceData *data_p);
@@ -130,7 +130,6 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 						data_p,
 						GetWebSearchServiceMetadata))
 						{
-
 							return web_service_p;
 						}
 				}
@@ -142,7 +141,7 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 }
 
 
-static WebSearchServiceData *AllocateWebSearchServiceData (json_t *op_json_p)
+static WebSearchServiceData *AllocateWebSearchServiceData (json_t *service_config_p)
 {
 	WebSearchServiceData *service_data_p = (WebSearchServiceData *) AllocMemory (sizeof (WebSearchServiceData));
 	
@@ -150,23 +149,49 @@ static WebSearchServiceData *AllocateWebSearchServiceData (json_t *op_json_p)
 		{
 			WebServiceData *data_p = & (service_data_p -> wssd_base_data);
 
-			if (InitWebServiceData (data_p, op_json_p))
+			if (InitWebServiceData (data_p, service_config_p))
 				{
-					service_data_p -> wssd_link_selector_s = GetJSONString (op_json_p, "link_selector");
+					json_t *op_p = json_object_get (service_config_p, OPERATION_S);
 
-					if (service_data_p -> wssd_link_selector_s)
+					if (op_p)
 						{
-							service_data_p -> wssd_title_selector_s = GetJSONString (op_json_p, "title_selector");
+							if ((service_data_p -> wssd_link_selector_s = GetJSONString (op_p, "link_selector")) != NULL)
+								{
+									if ((service_data_p -> wssd_title_selector_s = GetJSONString (op_p, "title_selector")) != NULL)
+										{
+											return service_data_p;
+										}		/* if ((service_data_p -> wssd_title_selector_s = GetJSONString (op_p, "title_selector")) != NULL) */
+									else
+										{
+											PrintJSONToErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, op_p, "Failed to get title_selector value");
+										}
 
-							return service_data_p;
+								}		/* if ((service_data_p -> wssd_link_selector_s = GetJSONString (op_p, "link_selector")) != NULL) */
+							else
+								{
+									PrintJSONToErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, op_p, "Failed to get link_selector value");
+								}
+
+						}		/* if (op_p) */
+					else
+						{
+							PrintJSONToErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, service_config_p, "Failed to get %s from service config", OPERATION_S);
 						}
 
 					ClearWebServiceData (data_p);
+				}		/* if (InitWebServiceData (data_p, service_config_p)) */
+			else
+				{
+					PrintJSONToErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, service_config_p, "InitWebServiceData failed");
 				}
 
 			FreeMemory (service_data_p);
+		}		/* if (service_data_p) */
+	else
+		{
+			PrintJSONToErrors (STM_LEVEL_SEVERE, __FILE__, __LINE__, service_config_p, "Failed to allocate WebSearchServiceData");
 		}
-		
+
 	return NULL;
 }
 
