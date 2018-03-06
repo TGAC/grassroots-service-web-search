@@ -91,19 +91,15 @@ ServicesArray *GetReferenceServices (UserDetails *user_p, json_t *config_p)
 }
 
 
-void ReleaseService (Service *service_p)
+void ReleaseServices (ServicesArray *services_p)
 {
-	FreeWebSearchServiceData ((WebSearchServiceData *) (service_p -> se_data_p));
-	FreeMemory (service_p);
+	FreeServicesArray (services_p);
 }
 
 
 /*
  * STATIC FUNCTIONS
  */
-
-
-
 
 static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PARAM (i))
 {									
