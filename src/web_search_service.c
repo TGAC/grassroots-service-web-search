@@ -57,6 +57,8 @@ static const char *GetWebSearchServiceDesciption (Service *service_p);
 static const char *GetWebSearchServiceInformationUri (Service *service_p);
 
 
+static bool GetWebSearchServiceParameterTypeForNamedParameter (Service *service_p, const char *param_name_s, ParameterType *pt_p);
+
 static ParameterSet *GetWebSearchServiceParameters (Service *service_p, Resource *resource_p, UserDetails *user_p);
 
 static void ReleaseWebSearchServiceParameters (Service *service_p, ParameterSet *params_p);
@@ -118,6 +120,7 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 						RunWebSearchService,
 						IsResourceForWebSearchService,
 						GetWebSearchServiceParameters,
+						GetWebSearchServiceParameterTypeForNamedParameter,
 						ReleaseWebSearchServiceParameters,
 						CloseWebSearchService,
 						NULL,
@@ -230,6 +233,24 @@ static ParameterSet *GetWebSearchServiceParameters (Service *service_p, Resource
 
 	return (data_p -> wssd_base_data.wsd_params_p);
 }
+
+
+
+static bool GetWebSearchServiceParameterTypeForNamedParameter (Service *service_p, const char *param_name_s, ParameterType *pt_p)
+{
+	bool success_flag = false;
+	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
+	Parameter *param_p = GetParameterFromParameterSetByName (data_p -> wssd_base_data.wsd_params_p, param_name_s);
+
+	if (param_p)
+		{
+			*pt_p = param_p -> pa_type;
+		}
+
+	return success_flag;
+}
+
+
 
 
 static void ReleaseWebSearchServiceParameters (Service * UNUSED_PARAM (service_p), ParameterSet * UNUSED_PARAM (params_p))
