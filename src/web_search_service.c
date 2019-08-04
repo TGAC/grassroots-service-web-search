@@ -47,7 +47,7 @@ typedef struct WebSearchServiceData
  */
 
 
-static Service *GetWebSearchService (json_t *operation_json_p, size_t i);
+static Service *GetWebSearchService (json_t *operation_json_p, size_t i, GrassrootsServer *grassroots_p);
 
 static const char *GetWebSearchServiceName (Service *service_p);
 
@@ -87,9 +87,9 @@ static ServiceMetadata *GetWebSearchServiceMetadata (Service *service_p);
  
 
  
-ServicesArray *GetReferenceServices (UserDetails *user_p, json_t *config_p)
+ServicesArray *GetReferenceServices (UserDetails *user_p, GrassrootsServer *grassroots_p, json_t *config_p)
 {
-	return GetReferenceServicesFromJSON (config_p, "web_search_service", GetWebSearchService);
+	return GetReferenceServicesFromJSON (config_p, "web_search_service", GetWebSearchService, grassroots_p);
 }
 
 
@@ -103,7 +103,7 @@ void ReleaseServices (ServicesArray *services_p)
  * STATIC FUNCTIONS
  */
 
-static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PARAM (i))
+static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PARAM (i), GrassrootsServer *grassroots_p)
 {									
 	Service *web_service_p = (Service *) AllocMemory (sizeof (Service));
 	
@@ -128,7 +128,8 @@ static Service *GetWebSearchService (json_t *operation_json_p, size_t UNUSED_PAR
 						SY_SYNCHRONOUS,
 						data_p,
 						GetWebSearchServiceMetadata,
-						NULL))
+						NULL,
+						grassroots_p))
 						{
 							return web_service_p;
 						}

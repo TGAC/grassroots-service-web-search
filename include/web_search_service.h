@@ -41,7 +41,7 @@ extern "C"
  * <code>NULL</code> upon error.
  * @ingroup web_search_service
  */
-WEB_SEARCH_SERVICE_API ServicesArray *GetReferenceServices (UserDetails *user_p, json_t *config_p);
+WEB_SEARCH_SERVICE_API ServicesArray *GetReferenceServices (UserDetails *user_p, GrassrootsServer *grassroots_p, json_t *config_p);
 
 
 /**
