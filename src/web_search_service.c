@@ -49,16 +49,16 @@ typedef struct WebSearchServiceData
 
 static Service *GetWebSearchService (json_t *operation_json_p, size_t i, GrassrootsServer *grassroots_p);
 
-static const char *GetWebSearchServiceName (Service *service_p);
+static const char *GetWebSearchServiceName (const Service *service_p);
 
-static const char *GetWebSearchServiceDescription (Service *service_p);
+static const char *GetWebSearchServiceDescription (const Service *service_p);
 
-static const char *GetWebSearchServiceAlias (Service *service_p);
+static const char *GetWebSearchServiceAlias (const Service *service_p);
 
-static const char *GetWebSearchServiceInformationUri (Service *service_p);
+static const char *GetWebSearchServiceInformationUri (const Service *service_p);
 
 
-static bool GetWebSearchServiceParameterTypeForNamedParameter (Service *service_p, const char *param_name_s, ParameterType *pt_p);
+static bool GetWebSearchServiceParameterTypeForNamedParameter (const Service *service_p, const char *param_name_s, ParameterType *pt_p);
 
 static ParameterSet *GetWebSearchServiceParameters (Service *service_p, Resource *resource_p, UserDetails *user_p);
 
@@ -207,7 +207,7 @@ static void FreeWebSearchServiceData (WebSearchServiceData *data_p)
 }
 
 
-static const char *GetWebSearchServiceName (Service *service_p)
+static const char *GetWebSearchServiceName (const Service *service_p)
 {
 	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
 	
@@ -215,7 +215,7 @@ static const char *GetWebSearchServiceName (Service *service_p)
 }
 
 
-static const char *GetWebSearchServiceDescription (Service *service_p)
+static const char *GetWebSearchServiceDescription (const Service *service_p)
 {
 	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
 
@@ -223,7 +223,7 @@ static const char *GetWebSearchServiceDescription (Service *service_p)
 }
 
 
-static const char *GetWebSearchServiceAlias (Service *service_p)
+static const char *GetWebSearchServiceAlias (const Service *service_p)
 {
 	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
 
@@ -232,7 +232,7 @@ static const char *GetWebSearchServiceAlias (Service *service_p)
 
 
 
-static const char *GetWebSearchServiceInformationUri (Service *service_p)
+static const char *GetWebSearchServiceInformationUri (const Service *service_p)
 {
 	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
 
@@ -249,7 +249,7 @@ static ParameterSet *GetWebSearchServiceParameters (Service *service_p, Resource
 
 
 
-static bool GetWebSearchServiceParameterTypeForNamedParameter (Service *service_p, const char *param_name_s, ParameterType *pt_p)
+static bool GetWebSearchServiceParameterTypeForNamedParameter (const Service *service_p, const char *param_name_s, ParameterType *pt_p)
 {
 	bool success_flag = false;
 	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
