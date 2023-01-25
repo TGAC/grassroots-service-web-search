@@ -60,7 +60,7 @@ static const char *GetWebSearchServiceInformationUri (const Service *service_p);
 
 static bool GetWebSearchServiceParameterTypeForNamedParameter (const Service *service_p, const char *param_name_s, ParameterType *pt_p);
 
-static ParameterSet *GetWebSearchServiceParameters (Service *service_p, Resource *resource_p, UserDetails *user_p);
+static ParameterSet *GetWebSearchServiceParameters (Service *service_p, DataResource *resource_p, UserDetails *user_p);
 
 static void ReleaseWebSearchServiceParameters (Service *service_p, ParameterSet *params_p);
 
@@ -68,7 +68,7 @@ static void ReleaseWebSearchServiceParameters (Service *service_p, ParameterSet 
 static ServiceJobSet *RunWebSearchService (Service *service_p, ParameterSet *param_set_p, UserDetails *user_p, ProvidersStateTable *providers_p);
 
 
-static  ParameterSet *IsResourceForWebSearchService (Service *service_p, Resource *resource_p, Handler *handler_p);
+static  ParameterSet *IsResourceForWebSearchService (Service *service_p, DataResource *resource_p, Handler *handler_p);
 
 
 static WebSearchServiceData *AllocateWebSearchServiceData (json_t *service_config_p);
@@ -240,7 +240,7 @@ static const char *GetWebSearchServiceInformationUri (const Service *service_p)
 }
 
 
-static ParameterSet *GetWebSearchServiceParameters (Service *service_p, Resource * UNUSED_PARAM (resource_p), UserDetails * UNUSED_PARAM (user_p))
+static ParameterSet *GetWebSearchServiceParameters (Service *service_p, DataResource * UNUSED_PARAM (resource_p), UserDetails * UNUSED_PARAM (user_p))
 {
 	WebSearchServiceData *data_p = (WebSearchServiceData *) (service_p -> se_data_p);
 
@@ -378,7 +378,7 @@ static json_t *CreateWebSearchServiceResults (WebSearchServiceData *data_p)
 }
 	
 
-static  ParameterSet *IsResourceForWebSearchService (Service * UNUSED_PARAM (service_p), Resource * UNUSED_PARAM (resource_p), Handler * UNUSED_PARAM (handler_p))
+static  ParameterSet *IsResourceForWebSearchService (Service * UNUSED_PARAM (service_p), DataResource * UNUSED_PARAM (resource_p), Handler * UNUSED_PARAM (handler_p))
 {
 	return NULL;
 }

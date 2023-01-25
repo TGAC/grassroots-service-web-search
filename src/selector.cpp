@@ -134,9 +134,9 @@ static json_t *GetHtmlLinkAsJSON (const HtmlLink * const link_p)
 	char *protocol_s = NULL;
 	char *path_s = NULL;
 
-	if (GetResourceProtocolAndPath (link_p -> hl_uri_s, &protocol_s, &path_s))
+	if (GetDataResourceProtocolAndPath (link_p -> hl_uri_s, &protocol_s, &path_s))
 		{
-			json_p = GetResourceAsJSONByParts (protocol_s, path_s, link_p -> hl_data_s, NULL);
+			json_p = GetDataResourceAsJSONByParts (protocol_s, path_s, link_p -> hl_data_s, NULL);
 
 			FreeCopiedString (protocol_s);
 			FreeCopiedString (path_s);
